@@ -88,11 +88,24 @@ summary(isnadata)
 There are `r sum(isnadata) ` missing values (NA) in the dataset.
 
 ### Devise a strategy for filling in all of the missing values in the dataset.
-Fill all the missing values (NA) in each interval with the mean of the same interval.
-```{r}
-```
+Fill all the missing values (NA) using the mean of the same interval.
+
 
 ### Create a new dataset that is equal to the original dataset but with the missing data filled in.
+Create a for statement to go over all the rows in the dataset, find missing values and replace them with the mean value.
+
+```{r}
+filldata <- data
+
+for (i in 1:nrow(filldata)){
+  if (is.na(filldata$steps[i])){
+    interval_val <- filldata$interval[i]
+    row_id <- which(dapdata$interval == interval_val)
+    steps_val <- dapdata$steps[row_id]
+    filldata$steps[i] <- steps_val
+  }
+}
+```
 
 ### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 

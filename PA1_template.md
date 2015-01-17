@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output:
+  html_document:
+    keep_md: true
+---
 
 
 ## Loading and preprocessing the data
@@ -43,7 +48,7 @@ names(dframe) <- c('date','steps')
 hist(dframe$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
 
 ### Calculate and report the mean and median total number of steps taken per day
 Mean of steps taken per day
@@ -80,7 +85,7 @@ Create a scatterplot:
 plot(dapdata, type="l", main="Average Daily Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
 
 ### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 Find max showing its interval
@@ -119,10 +124,25 @@ summary(isnadata)
 There are 2304 missing values (NA) in the dataset.
 
 ### Devise a strategy for filling in all of the missing values in the dataset.
-Fill all the missing values (NA) in each interval with the mean of the same interval.
+Fill all the missing values (NA) using the mean of the same interval.
 
 
 ### Create a new dataset that is equal to the original dataset but with the missing data filled in.
+Create a for statement to go over all the rows in the dataset, find missing values and replace them with the mean value.
+
+
+```r
+filldata <- data
+
+for (i in 1:nrow(filldata)){
+  if (is.na(filldata$steps[i])){
+    interval_val <- filldata$interval[i]
+    row_id <- which(dapdata$interval == interval_val)
+    steps_val <- dapdata$steps[row_id]
+    filldata$steps[i] <- steps_val
+  }
+}
+```
 
 ### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
