@@ -7,9 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-Load the libraries we need for the program:
-```{r}
-```
+
 
 Get data set from the link given in the assignment:
 ```{r cache=TRUE}
@@ -135,18 +133,37 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 ### Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 First, transform the dates into a Date Class:
 ```{r}
-dframenew$date <- as.Date(dframenew$date)
+filldata$date <- as.Date(filldata$date)
 ```
 Second, identify if the date is a weekday or weekend:
 ```{r}
-dframenew$weekday <- weekdays(dframenew$date)
-for (i in 1:nrow(dframenew)){
-  if (dframenew$weekday[i] == 'Saturday' |dframenew$weekday[i] == 'Sunday'){
-    dframenew$weekday[i] <- 'Weekend'
+filldata$weekday <- weekdays(filldata$date)
+for (i in 1:nrow(filldata)){
+  if (filldata$weekday[i] == 'Saturday' |filldata$weekday[i] == 'Sunday'){
+    filldata$weekday[i] <- 'Weekend'
   } else {
-    dframenew$weekday[i] <- 'Weekday'
+    filldata$weekday[i] <- 'Weekday'
   }
 }
+filldata$weekday <- as.factor(filldata$weekday)
+splitdata <- split(filldata, filldata$weekday)
+weekday <- splitdata$Weekday
+weekend <- splitdata$Weekend
 
 ```
-### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
+Show the new dataframe with the weekday/weekend factor:
+```{r}
+```
+### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+Prepare data for time series
+```{r}
+dapweekdaydata <- aggregate(steps ~ interval, FUN=mean, data=weekday)
+dapweekenddata <- aggregate(steps ~ interval, FUN=mean, data=weekend)
+```
+Plot time series of weekday and weekend
+```{r}
+par(mfrow=c(2,1))
+plot(dapweekdaydata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+plot(dapweekenddata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+
+```

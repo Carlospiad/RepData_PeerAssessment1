@@ -7,7 +7,6 @@ output:
 
 
 ## Loading and preprocessing the data
-Load the libraries we need for the program:
 
 
 Get data set from the link given in the assignment:
@@ -48,7 +47,7 @@ names(dframe) <- c('date','steps')
 hist(dframe$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 ### Calculate and report the mean and median total number of steps taken per day
 Mean of steps taken per day
@@ -85,7 +84,7 @@ Create a scatterplot:
 plot(dapdata, type="l", main="Average Daily Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
 
 ### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 Find max showing its interval
@@ -153,7 +152,7 @@ names(dframenew) <- c('date','steps')
 hist(dframenew$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
 
 Mean of steps taken per day
 
@@ -187,18 +186,39 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 First, transform the dates into a Date Class:
 
 ```r
-dframenew$date <- as.Date(dframenew$date)
+filldata$date <- as.Date(filldata$date)
 ```
 Second, identify if the date is a weekday or weekend:
 
 ```r
-dframenew$weekday <- weekdays(dframenew$date)
-for (i in 1:nrow(dframenew)){
-  if (dframenew$weekday[i] == 'Saturday' |dframenew$weekday[i] == 'Sunday'){
-    dframenew$weekday[i] <- 'Weekend'
+filldata$weekday <- weekdays(filldata$date)
+for (i in 1:nrow(filldata)){
+  if (filldata$weekday[i] == 'Saturday' |filldata$weekday[i] == 'Sunday'){
+    filldata$weekday[i] <- 'Weekend'
   } else {
-    dframenew$weekday[i] <- 'Weekday'
+    filldata$weekday[i] <- 'Weekday'
   }
 }
+filldata$weekday <- as.factor(filldata$weekday)
+splitdata <- split(filldata, filldata$weekday)
+weekday <- splitdata$Weekday
+weekend <- splitdata$Weekend
 ```
-### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
+Show the new dataframe with the weekday/weekend factor:
+
+### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+Prepare data for time series
+
+```r
+dapweekdaydata <- aggregate(steps ~ interval, FUN=mean, data=weekday)
+dapweekenddata <- aggregate(steps ~ interval, FUN=mean, data=weekend)
+```
+Plot time series of weekday and weekend
+
+```r
+par(mfrow=c(2,1)) 
+plot(dapweekdaydata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+plot(dapweekenddata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+```
+
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png) 
