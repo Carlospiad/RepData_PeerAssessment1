@@ -70,7 +70,6 @@ plot(dapdata, type="l", main="Average Daily Activity Pattern",xlab="Hour of the 
 Find max showing its interval
 ```{r}
 dapdata[which.max(dapdata$steps),]
-
 ```
 
 ## Imputing missing values
@@ -107,13 +106,47 @@ for (i in 1:nrow(filldata)){
 }
 ```
 
-### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
 
+```{r}
+dframenew<-aggregate(filldata$steps ~ filldata$date, FUN=sum, data=filldata)
+names(dframenew) <- c('date','steps')
+hist(dframenew$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
+```
+
+Mean of steps taken per day
+```{r}
+mean(dframenew$steps)
+```
+Median of steps taken per day
+```{r}
+median(dframenew$steps)
+```
+
+####  Do these values differ from the estimates from the first part of the assignment?
+The median value differs thus creating a slight difference in the histogram.
+#### What is the impact of imputing missing data on the estimates of the total daily number of steps?
+In this case the median increases (because the median was smaller than the mean previously). The histogram changes slightly too.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
 
 ### Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+First, transform the dates into a Date Class:
+```{r}
+dframenew$date <- as.Date(dframenew$date)
+```
+Second, identify if the date is a weekday or weekend:
+```{r}
+dframenew$weekday <- weekdays(dframenew$date)
+for (i in 1:nrow(dframenew)){
+  if (dframenew$weekday[i] == 'Saturday' |dframenew$weekday[i] == 'Sunday'){
+    dframenew$weekday[i] <- 'Weekend'
+  } else {
+    dframenew$weekday[i] <- 'Weekday'
+  }
+}
 
+```
 ### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
