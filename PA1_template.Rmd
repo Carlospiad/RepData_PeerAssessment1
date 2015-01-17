@@ -164,6 +164,6 @@ Plot time series of weekday and weekend
 ```{r}
 par(mfrow=c(2,1))
 plot(dapweekdaydata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
-plot(dapweekenddata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+plot(dapweekenddata, type="l", main="Average Weekend Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
 
 ```

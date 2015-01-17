@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output:
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -47,7 +42,7 @@ names(dframe) <- c('date','steps')
 hist(dframe$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
 ### Calculate and report the mean and median total number of steps taken per day
 Mean of steps taken per day
@@ -84,7 +79,7 @@ Create a scatterplot:
 plot(dapdata, type="l", main="Average Daily Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
 
 ### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 Find max showing its interval
@@ -152,7 +147,7 @@ names(dframenew) <- c('date','steps')
 hist(dframenew$steps,main='Histogram of Daily Steps',xlab='Total steps each day',col='grey',breaks=15)
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-15-1.png) 
 
 Mean of steps taken per day
 
@@ -216,9 +211,9 @@ dapweekenddata <- aggregate(steps ~ interval, FUN=mean, data=weekend)
 Plot time series of weekday and weekend
 
 ```r
-par(mfrow=c(2,1)) 
+par(mfrow=c(2,1))
 plot(dapweekdaydata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
-plot(dapweekenddata, type="l", main="Average Weekday Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
+plot(dapweekenddata, type="l", main="Average Weekend Activity Pattern",xlab="Hour of the day", ylab="Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-22-1.png) 
